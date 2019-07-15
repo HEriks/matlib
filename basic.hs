@@ -1,5 +1,5 @@
 module Basic where
-    {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE FlexibleContexts #-}
 import Test.QuickCheck
 ---- Double is used as an approximation of the real numbers ----
 
@@ -34,7 +34,7 @@ pow _ 0   = 1
 pow 0 exp = 0
 pow n exp
     | exp > 0   = times n (pow n (abs exp - 1))
-    | otherwise = 1 / pow n (abs exp) --TODO
+    | otherwise = 1 / pow n (abs exp)
 
 -- From the cheat sheet for ma2c
 kvadr1 :: Double -> Double -> Double
@@ -61,13 +61,12 @@ findNextDivisor n i | n `mod` i == 0 = i
                     | otherwise      = findNextDivisor n (i+1)
 
 -- Is a given number a prime?
-isPrime :: Int -> Bool
-isPrime n | n < 2 = False
-          | n < 4 = True
-          | otherwise = ip n 4
-                where
-                    ip n x | x > (floor . sqrt . fromIntegral n) = False
-                           | otherwise = if mod n x == 0 then True else ip n (x+1)
+pt :: Int -> Bool
+pt n 
+    | n < 2     = False
+    | n == 2    = True
+    | otherwise = if elem True [n `mod` x == 0 | x <- [2..(n-1)]] then False else True
+         
 
 -- QuickCheck to ensure the functions work
 checkMinus :: Double -> Double -> Bool
