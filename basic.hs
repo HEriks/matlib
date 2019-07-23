@@ -1,5 +1,5 @@
 module Basic where
-    {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE FlexibleContexts #-}
 import Test.QuickCheck
 ---- Double is used as an approximation of the real numbers ----
 
@@ -26,7 +26,29 @@ times 1 b = b
 times a b 
     | b < 0     = neg (plus a (times a (abs b - 1)))    -- -1 * (a + (abs b - 1))
     | otherwise = plus a (times a (b-1))
-    
+
+divi :: Double -> Double -> Double
+divi 0 _ = 0
+divi _ 0 = error "Division by zero impossible"
+divi x y = x / y
+
+prod :: Num a => [a] -> a
+prod []     = 1
+prod (x:xs) = x * prod xs
+
+factorial :: Double -> Double
+factorial 1 = 1
+factorial n | n > 0     = times n (factorial (minus n 1))
+            | otherwise = error "Only positive numbers allowed"
+
+factorialPlus :: Double -> Double
+factorialPlus 0 = 0
+factorialPlus n | n > 0     = plus n (factorialPlus (minus n 1))
+                | otherwise = error "Only positive numbers allowed"
+
+factorialPlus' :: Double -> Double
+factorialPlus' n | n > 0 = divi (times n (plus n 1)) 2
+                 | otherwise = error "Only positive numbers allowed" 
 
 -- From the cheat sheet for ma1c
 pow :: Double -> Double -> Double   -- a^b
@@ -62,12 +84,7 @@ findNextDivisor n i | n `mod` i == 0 = i
 
 -- Is a given number a prime?
 isPrime :: Int -> Bool
-isPrime n | n < 2 = False
-          | n < 4 = True
-          | otherwise = ip n 4
-                where
-                    ip n x | x > (floor . sqrt . fromIntegral n) = False
-                           | otherwise = if mod n x == 0 then True else ip n (x+1)
+isPrime n = length [ x | x <- [2..(floor(sqrt(fromIntegral n)))], mod n x == 0] == 0
 
 -- QuickCheck to ensure the functions work
 checkMinus :: Double -> Double -> Bool
@@ -88,3 +105,6 @@ checkKvadr1 x y = kvadr1 x y == (x + y) ^ 2
 
 checkKvadr2 :: Double -> Double -> Bool
 checkKvadr2 x y = kvadr1 x y == (x - y) ^ 2
+
+-- checkPrimeFactors :: Int -> Bool
+-- checkPrimeFactors n = n == foldr (*) 1 primeFactors
