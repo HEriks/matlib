@@ -56,7 +56,7 @@ pow _ 0   = 1
 pow 0 exp = 0
 pow n exp
     | exp > 0   = times n (pow n (abs exp - 1))
-    | otherwise = 1 / pow n (abs exp) --TODO
+    | otherwise = 1 / pow n (abs exp)
 
 -- From the cheat sheet for ma2c
 kvadr1 :: Double -> Double -> Double
@@ -83,8 +83,17 @@ findNextDivisor n i | n `mod` i == 0 = i
                     | otherwise      = findNextDivisor n (i+1)
 
 -- Is a given number a prime?
+<<<<<<< HEAD
 isPrime :: Int -> Bool
 isPrime n = length [ x | x <- [2..(floor(sqrt(fromIntegral n)))], mod n x == 0] == 0
+=======
+pt :: Int -> Bool
+pt n 
+    | n < 2     = False
+    | n == 2    = True
+    | otherwise = if elem True [n `mod` x == 0 | x <- [2..(n-1)]] then False else True
+         
+>>>>>>> 711a94ddb9d720496d8be002632318a784a04875
 
 -- QuickCheck to ensure the functions work
 checkMinus :: Double -> Double -> Bool
